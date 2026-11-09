@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Rencana Pembelajaran Mendalam (RPM) - Neon Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* gray-950 sangat gelap untuk neon */
+            color: #f3f4f6; /* gray-100 */
+        }
+        
+        .form-section {
+            background-color: #111827; /* gray-900 */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-section h2 {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .neon-cyan { border: 1px solid rgba(6, 182, 212, 0.4); box-shadow: 0 0 15px rgba(6, 182, 212, 0.15); }
+        .neon-cyan:hover { box-shadow: 0 0 25px rgba(6, 182, 212, 0.3); border-color: rgba(6, 182, 212, 0.8); }
+        .neon-cyan h2 { color: #22d3ee; text-shadow: 0 0 8px rgba(34, 211, 238, 0.5); border-bottom-color: rgba(6, 182, 212, 0.3); }
+
+        .neon-pink { border: 1px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 15px rgba(236, 72, 153, 0.15); }
+        .neon-pink:hover { box-shadow: 0 0 25px rgba(236, 72, 153, 0.3); border-color: rgba(236, 72, 153, 0.8); }
+        .neon-pink h2 { color: #f472b6; text-shadow: 0 0 8px rgba(244, 114, 182, 0.5); border-bottom-color: rgba(236, 72, 153, 0.3); }
+
+        .neon-lime { border: 1px solid rgba(132, 204, 22, 0.4); box-shadow: 0 0 15px rgba(132, 204, 22, 0.15); }
+        .neon-lime:hover { box-shadow: 0 0 25px rgba(132, 204, 22, 0.3); border-color: rgba(132, 204, 22, 0.8); }
+        .neon-lime h2 { color: #a3e635; text-shadow: 0 0 8px rgba(163, 230, 53, 0.5); border-bottom-color: rgba(132, 204, 22, 0.3); }
+
+        .neon-purple { border: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 15px rgba(168, 85, 247, 0.15); }
+        .neon-purple:hover { box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.8); }
+        .neon-purple h2 { color: #c084fc; text-shadow: 0 0 8px rgba(192, 132, 252, 0.5); border-bottom-color: rgba(168, 85, 247, 0.3); }
+
+        .neon-yellow { border: 1px solid rgba(234, 179, 8, 0.4); box-shadow: 0 0 15px rgba(234, 179, 8, 0.15); }
+        .neon-yellow:hover { box-shadow: 0 0 25px rgba(234, 179, 8, 0.3); border-color: rgba(234, 179, 8, 0.8); }
+        .neon-yellow h2 { color: #facc15; text-shadow: 0 0 8px rgba(250, 204, 21, 0.5); border-bottom-color: rgba(234, 179, 8, 0.3); }
+
+        .neon-orange { border: 1px solid rgba(249, 115, 22, 0.4); box-shadow: 0 0 15px rgba(249, 115, 22, 0.15); }
+        .neon-orange:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.3); border-color: rgba(249, 115, 22, 0.8); }
+        .neon-orange h2 { color: #fb923c; text-shadow: 0 0 8px rgba(251, 146, 60, 0.5); border-bottom-color: rgba(249, 115, 22, 0.3); }
+
+        .input-field {
+            background-color: #1f2937; /* gray-800 */
+            border: 1px solid #374151; /* gray-700 */
+            color: #f9fafb; /* gray-50 */
+            font-size: 0.875rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            padding: 0.625rem;
+            transition: all 0.2s;
+        }
+        .input-field::placeholder { color: #6b7280; }
+        
+        .input-field:focus { 
+            outline: none; 
+            border-color: #06b6d4; 
+            background-color: #111827;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4); 
+        }
+        .input-field:disabled, .input-field[readonly] { background-color: #111827; color: #4b5563; border-color: #1f2937; }
+        
+        .input-label { display: block; margin-bottom: 0.375rem; font-size: 0.875rem; font-weight: 600; color: #9ca3af; }
+
+        #output-container {
+            border: 2px solid #38bdf8;
+            border-radius: 0.5rem;
+            padding: 3rem;
+            background-color: #ffffff; /* Tetap Putih */
+            color: #000000; /* Tetap Hitam */
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+            min-height: 800px; /* Simulate A4 */
+        }
+        
+        .spinner {
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Updated RPP Document Styles to enforce justification and neat numbering */
+        .rpp-document { font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: black; line-height: 1.5; text-align: justify; }
+        .rpp-document table { width: 100%; border-collapse: collapse; text-align: left; }
+        .rpp-document .main-table, .rpp-document .main-table td { border: 1px solid black; }
+        .rpp-document .main-table > tbody > tr > td:first-child { font-weight: bold; width: 25%; }
+        .rpp-document .main-table td { padding: 8px; vertical-align: top; text-align: justify; }
+        .rpp-document .nested-table, .rpp-document .nested-table th, .rpp-document .nested-table td { border: 1px solid black; }
+        .rpp-document .nested-table th { background-color: #f2f2f2; text-align: center; }
+        .rpp-document .nested-table td { text-align: justify; }
+        .rpp-document .nested-table td, .rpp-document .nested-table th { padding: 6px; }
+        .rpp-document ul, .rpp-document ol { padding-left: 2.2em; margin: 0 0 10px 0; text-align: justify; }
+        .rpp-document li { margin-bottom: 4px; text-align: justify; }
+        .rpp-document p { margin-top: 0; margin-bottom: 10px; text-align: justify; }
+
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; box-shadow: 0 0 10px #06b6d4; }
+
+        @media print {
+            body { background-color: #fff; }
+            body * { visibility: hidden; }
+            #output-container, #output-container * { visibility: visible; }
+            #output-container { position: absolute; left: 0; top: 0; width: 100%; border: none; padding: 0; box-shadow: none; }
+            #output-controls, #rpmForm, header { display: none; }
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div id="custom-modal" class="hidden fixed inset-0 bg-black bg-opacity-80 backdrop-blur-md flex items-center justify-center z-50 transition-opacity">
+        <div class="bg-gray-900 border border-cyan-500 shadow-[0_0_30px_rgba(6,182,212,0.4)] rounded-xl p-6 max-w-sm w-full mx-4">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-cyan-900/50 p-2 rounded-full text-cyan-400 border border-cyan-400/50 shadow-[0_0_10px_rgba(6,182,212,0.5)]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-cyan-400 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]">System Notice</h3>
+            </div>
+            <p id="modal-message" class="text-gray-300 mb-6 leading-relaxed"></p>
+            <div class="flex justify-end">
+                <button onclick="closeModal()" class="bg-gray-800 hover:bg-cyan-600 text-cyan-300 hover:text-white border border-cyan-700 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(6,182,212,0.6)] font-medium py-2 px-5 rounded-lg transition-all duration-300">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-[98%] xl:max-w-7xl mx-auto">
+        <header class="text-center mb-10 bg-gray-900/80 p-8 rounded-2xl border border-pink-500/40 shadow-[0_0_25px_rgba(236,72,153,0.15)] backdrop-blur-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-pink-500 to-yellow-400"></div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-pink-400 to-lime-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+                Generator Rencana Pembelajaran Mendalam
+            </h1>
+        </header>
+
+        <form id="rpmForm">
+            <div class="lg:grid lg:grid-cols-2 gap-8 items-start">
+                <div class="space-y-8">
+                    
+                    <!-- BAGIAN 1: INFORMASI DASAR (Neon Cyan) -->
+                    <div class="form-section neon-cyan relative">
+                        <h2>Bagian 1: Informasi Dasar</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="namaSekolah" class="input-label">Nama Sekolah</label>
+                                <input type="text" id="namaSekolah" class="input-field" placeholder="Ketik nama sekolah...">
+                            </div>
+                            <div>
+                                <label for="jenjangSekolah" class="input-label">Jenjang Sekolah</label>
+                                <input type="text" id="jenjangSekolah" class="input-field" placeholder="Contoh: SD">
+                            </div>
+                            <div>
+                                <label for="mataPelajaran" class="input-label">Mata Pelajaran</label>
+                                <input type="text" id="mataPelajaran" class="input-field" placeholder="Ketik Mata Pelajaran...">
+                            </div>
+                            <div>
+                                <label for="materiPokok" class="input-label">Topik Pembelajaran</label>
+                                <input type="text" id="materiPokok" class="input-field" placeholder="Ketik topik materi...">
+                            </div>
+                            <div>
+                                <label for="tahunPelajaran" class="input-label">Tahun Pelajaran</label>
+                                <input type="text" id="tahunPelajaran" class="input-field" placeholder="Contoh: 2025/2026">
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label for="kelasSemester" class="input-label">Kelas/Smt</label>
+                                    <select id="kelasSemester" class="input-field">
+                                        <option value="" disabled selected>Pilih...</option>
+                                        <option>I / Ganjil</option>
+                                        <option>I / Genap</option>
+                                        <option>II / Ganjil</option>
+                                        <option>II / Genap</option>
+                                        <option>III / Ganjil</option>
+                                        <option>III / Genap</option>
+                                        <option>IV / Ganjil</option>
+                                        <option>IV / Genap</option>
+                                        <option>V / Ganjil</option>
+                                        <option>V / Genap</option>
+                                        <option>VI / Ganjil</option>
+                                        <option>VI / Genap</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="fase" class="input-label">Fase</label>
+                                    <select id="fase" class="input-field">
+                                        <option value="" disabled selected>Pilih...</option>
+                                        <option>E</option>
+                                        <option>F</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="totalJP" class="input-label">Total Waktu (JP)</label>
+                                <input type="number" id="totalJP" class="input-field" placeholder="Contoh: 9">
+                            </div>
+                            <div>
+                                <label for="pertemuanJP" class="input-label">Alokasi / Pertemuan</label>
+                                <select id="pertemuanJP" class="input-field">
+                                    <option value="" disabled selected>Pilih Alokasi...</option>
+                                    <option value="2">2 JP x 35 Menit</option>
+                                    <option value="3">3 JP x 35 Menit</option>
+                                    <option value="4">4 JP x 35 Menit</option>
+                                    <option value="5">5 JP x 35 Menit</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="penyusun" class="input-label">Penyusun</label>
+                                <input type="text" id="penyusun" class="input-field" placeholder="Ketik Nama Penyusun...">
+                            </div>
+                            <div>
+                                <label for="namaGuru" class="input-label">Nama Guru</label>
+                                <input type="text" id="namaGuru" class="input-field" placeholder="Ketik Nama Guru...">
+                            </div>
+                            
+                            <div>
+                                <label for="nipGuru" class="input-label">NIP Guru</label>
+                                <input type="text" id="nipGuru" class="input-field" placeholder="Ketik NIP Guru (Opsional)...">
+                            </div>
+                             <div>
+                                <label for="namaKepsek" class="input-label">Nama Kepala Sekolah</label>
+                                <input type="text" id="namaKepsek" class="input-field" placeholder="Ketik Nama Kepala Sekolah...">
+                            </div>
+                            <div>
+                                <label for="nipKepsek" class="input-label">NIP Kepala Sekolah</label>
+                                <input type="text" id="nipKepsek" class="input-field" placeholder="Ketik NIP Kepala Sekolah (Opsional)...">
+                            </div>
+                             <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label for="kota" class="input-label">Kota</label>
+                                    <input type="text" id="kota" class="input-field" placeholder="Ketik Kota...">
+                                </div>
+                                <div>
+                                    <label for="tanggalPembuatan" class="input-label">Tanggal</label>
+                                    <input type="text" id="tanggalPembuatan" class="input-field" placeholder="Pilih/Ketik Tanggal">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BAGIAN 2: IDENTIFIKASI (Neon Pink) -->
+                    <div class="form-section neon-pink">
+                         <h2>Bagian 2: Identifikasi</h2>
+                         <div class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="input-label">Kesiapan Murid</label>
+                                    <div id="kesiapan-murid" class="bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm text-pink-300 italic min-h-[60px] shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
+                                        [Akan diisi otomatis oleh AI]
+                                   </div>
+                                </div>
+                                <div>
+                                    <label class="input-label">Karakteristik Materi</label>
+                                    <div id="karakteristik-materi" class="bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm text-pink-300 italic min-h-[60px] shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
+                                        [Akan diisi otomatis oleh AI]
+                                   </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="input-label">Dimensi Profil Lulusan yang Dituju</label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-gray-800 border border-pink-500/20 rounded-lg shadow-sm">
+                                    <div class="relative flex items-start">
+                                        <div class="flex items-center h-5"><input id="dimensiImanTaqwa" type="checkbox" class="w-4 h-4 text-pink-500 bg-gray-900 border-gray-600 rounded focus:ring-pink-500 focus:ring-offset-gray-800 accent-pink-500"></div>
+                                        <div class="ml-2 text-sm">
+                                           <label for="dimensiImanTaqwa" class="font-medium text-gray-200">Beriman & Bertakwa</label>
+                                           <p class="text-[11px] text-gray-400 leading-tight">Penghayatan nilai agama.</p>
+                                       </div>
+                                   </div>
+                                    <div class="relative flex items-start">
+                                        <div class="flex items-center h-5"><input id="dimensiKewargaan" type="checkbox" class="w-4 h-4 text-pink-500 bg-gray-900 border-gray-600 rounded focus:ring-pink-500 focus:ring-offset-gray-800 accent-pink-500"></div>
+                                        <div class="ml-2 text-sm">
+                                           <label for="dimensiKewargaan" class="font-medium text-gray-200">Kewargaan</label>
+                                           <p class="text-[11px] text-gray-400 leading-tight">Nasionalisme & kontribusi.</p>
+                                       </div>
+                                   </div>
+                                    <div class="relative flex items-start">
+                                        <div class="flex items-center h-5"><input id="dimensiPenalaranKritis" type="checkbox" class="w-4 h-4 text-pink-500 bg-gray-900 border-gray-600 rounded focus:ring-pink-500 focus:ring-offset-gray-800 accent-pink-500"></div>
+                                        <div class="ml-2 text-sm">
+                                           <label for="dimensiPenalaranKritis" class="font-medium text-gray-200">Penalaran Kritis</label>
+                                           <p class="text-[11px] text-gray-400 leading-tight">Menganalisis & memecahkan masalah.</p>
+                                       </div>
+                                   </div>
+                                     <div class="relative flex items-start">
+                                        <div class="flex items-center h-5"><input id="dimensiKreativitas" type="checkbox" class="w-4 h-4 text-pink-500 bg-gray-900 border-gray-600 rounded focus:ring-pink-500 focus:ring-offset-gray-800 accent-pink-500"></div>
+                                        <div class="ml-2 text-sm">
+                                           <label for="dimensiKreativitas" class="font-medium text-gray-200">Kreativitas</label>
+                                           <p class="text-[11px] text-gray-400 leading-tight">Menghasilkan solusi bermanfaat.</p>
+                                       </div>
+                                   </div>
+                                    <div class="relative flex items-start">
+                                       <div class="flex items-center h-5"><input id="dimensiKolaborasi" type="checkbox" class="w-4 h-4 text-pink-500 bg-gray-900 border-gray-600 rounded focus:ring-pink-500 focus:ring-offset-gray-800 accent-pink-500"></div>
+                                       <div class="ml-2 text-sm">
+                                          <label for="dimensiKolaborasi" class="font-medium text-gray-200">Kolaborasi</label>
+                                          <p class="text-[11px] text-gray-400 leading-tight">Bekerja sama efektif.</p>
+                                      </div>
+                                   </div>
+                                    <div class="relative flex items-start">
+                                       <div class="flex items-center h-5"><input id="dimensiKemandirian" type="checkbox" class="w-4 h-4 text-pink-500 bg-gray-900 border-gray-600 rounded focus:ring-pink-500 focus:ring-offset-gray-800 accent-pink-500"></div>
+                                       <div class="ml-2 text-sm">
+                                          <label for="dimensiKemandirian" class="font-medium text-gray-200">Kemandirian</label>
+                                          <p class="text-[11px] text-gray-400 leading-tight">Tanggung jawab belajar.</p>
+                                      </div>
+                                   </div>
+                                    <div class="relative flex items-start">
+                                        <div class="flex items-center h-5"><input id="dimensiKesehatan" type="checkbox" class="w-4 h-4 text-pink-500 bg-gray-900 border-gray-600 rounded focus:ring-pink-500 focus:ring-offset-gray-800 accent-pink-500"></div>
+                                        <div class="ml-2 text-sm">
+                                           <label for="dimensiKesehatan" class="font-medium text-gray-200">Kesehatan</label>
+                                           <p class="text-[11px] text-gray-400 leading-tight">Keseimbangan fisik mental.</p>
+                                       </div>
+                                   </div>
+                                    <div class="relative flex items-start">
+                                       <div class="flex items-center h-5"><input id="dimensiKomunikasi" type="checkbox" class="w-4 h-4 text-pink-500 bg-gray-900 border-gray-600 rounded focus:ring-pink-500 focus:ring-offset-gray-800 accent-pink-500"></div>
+                                       <div class="ml-2 text-sm">
+                                          <label for="dimensiKomunikasi" class="font-medium text-gray-200">Komunikasi</label>
+                                          <p class="text-[11px] text-gray-400 leading-tight">Menyampaikan gagasan.</p>
+                                      </div>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="space-y-8 mt-8 lg:mt-0">
+                    
+                    <!-- BAGIAN 3: DESAIN PEMBELAJARAN (Neon Lime) -->
+                    <div class="form-section neon-lime">
+                        <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-5 gap-4">
+                            <h2 class="!border-none !pb-0 !mb-0">Bagian 3: Desain Pembelajaran</h2>
+                            <button type="button" id="generate-ai-btn" class="flex items-center gap-2 bg-gradient-to-r from-lime-400 to-green-500 hover:from-lime-300 hover:to-green-400 text-gray-900 font-extrabold py-2.5 px-4 rounded-xl w-full xl:w-auto justify-center text-sm shadow-[0_0_15px_rgba(132,204,22,0.6)] hover:shadow-[0_0_25px_rgba(132,204,22,0.8)] transition-all transform hover:-translate-y-0.5">
+                                <span id="ai-btn-text">✨ Hasilkan Ide dengan AI</span>
+                                <div id="ai-spinner" class="spinner hidden border-gray-800 border-top-lime-200"></div>
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- UPDATE: Area Capaian Pembelajaran (Bisa Ketik Manual / Upload File) -->
+                            <div class="relative p-1">
+                                <label for="desainCapaianPembelajaran" class="input-label text-lime-400">Capaian Pembelajaran (CP)</label>
+                                <textarea id="desainCapaianPembelajaran" rows="3" class="input-field mb-2" placeholder="Ketik manual Capaian Pembelajaran (CP) untuk dianalisis..."></textarea>
+                                
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <input type="file" id="cpFileInput" accept=".txt" class="hidden" onchange="handleCPFileUpload(event)">
+                                    <label for="cpFileInput" class="cursor-pointer bg-gray-800 hover:bg-lime-900/50 text-xs font-semibold text-lime-300 hover:text-lime-100 py-2 px-4 rounded-lg border border-lime-600/50 hover:border-lime-400 transition-all flex items-center gap-2 shadow-[0_0_8px_rgba(132,204,22,0.2)]">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                                        Unggah File CP (.txt)
+                                   </label>
+                                    <span id="cpFileName" class="text-xs text-gray-400 font-medium italic"></span>
+                                </div>
+                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed">Anda dapat mengetik manual atau mengunggah file teks (format <span class="text-gray-300 font-medium">.txt</span>). AI akan menganalisis CP ini untuk merumuskan Tujuan & Alur Pembelajaran secara terukur.</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <textarea id="desainTujuanPembelajaran" rows="4" class="input-field" placeholder="Tujuan Pembelajaran (TP) akan dihasilkan di sini..."></textarea>
+                                <textarea id="desainAlurTujuanPembelajaran" rows="4" class="input-field" placeholder="Alur Tujuan Pembelajaran (ATP) akan dihasilkan di sini..."></textarea>
+                                <textarea id="desainTopikPembelajaran" rows="4" class="input-field" placeholder="Rincian Topik Pembelajaran akan dihasilkan di sini..."></textarea>
+                            </div>
+                            
+                            <div class="p-4 border border-lime-500/30 rounded-lg bg-gray-800 shadow-[inset_0_0_10px_rgba(0,0,0,0.3)]">
+                                <label class="input-label text-lime-400">Praktik Pedagogis</label>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+                                    <div>
+                                       <select id="modelPembelajaran" class="input-field">
+                                           <option value="" disabled selected>Model...</option>
+                                           <option value="Project-Based Learning (PjBL)">Project-Based (PjBL)</option>
+                                           <option value="Problem-Based Learning (PBL)">Problem-Based (PBL)</option>
+                                           <option value="Inquiry-Based Learning">Inquiry-Based</option>
+                                           <option value="Discovery Learning">Discovery Learning</option>
+                                           <option value="Blended Learning">Blended Learning</option>
+                                       </select>
+                                   </div>
+                                    <div>
+                                       <select id="strategiPembelajaran" class="input-field">
+                                           <option value="" disabled selected>Strategi...</option>
+                                           <option value="Pembelajaran Berdiferensiasi">Berdiferensiasi</option>
+                                           <option value="Pembelajaran Kolaboratif">Kolaboratif</option>
+                                           <option value="Pembelajaran Kontekstual">Kontekstual</option>
+                                           <option value="Pembelajaran Aktif">Aktif</option>
+                                           <option value="Flipped Classroom">Flipped Classroom</option>
+                                           <option value="Gamifikasi">Gamifikasi</option>
+                                       </select>
+                                   </div>
+                                    <div>
+                                       <select id="metodePembelajaran" class="input-field">
+                                           <option value="" disabled selected>Metode...</option>
+                                           <option value="Diskusi Kelompok">Diskusi</option>
+                                           <option value="Tanya Jawab">Tanya Jawab</option>
+                                           <option value="Presentasi">Presentasi</option>
+                                           <option value="Demonstrasi">Demonstrasi</option>
+                                           <option value="Eksperimen">Eksperimen</option>
+                                           <option value="Studi Kasus">Studi Kasus</option>
+                                           <option value="Mind Mapping">Mind Mapping</option>
+                                           <option value="Role Playing">Role Playing</option>
+                                       </select>
+                                   </div>
+                                </div>
+                                <textarea id="desainPraktikPedagogis" rows="2" class="input-field" placeholder="Deskripsi pedagogis dari AI..."></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <textarea id="desainLingkungan" rows="3" class="input-field" placeholder="Lingkungan Pembelajaran..."></textarea>
+                                <textarea id="desainDigital" rows="3" class="input-field" placeholder="Pemanfaatan Digital..."></textarea>
+                                <textarea id="desainKemitraan" rows="3" class="input-field" placeholder="Kemitraan..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BAGIAN 5: ASESMEN & RUBRIK (Neon Yellow) -->
+                    <div class="form-section neon-yellow">
+                        <h2>Bagian 5: Asesmen & Rubrik</h2>
+                        <div class="space-y-4">
+                            <textarea id="asesmenAwal" rows="2" class="input-field" placeholder="Saran Asesmen Awal..."></textarea>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="space-y-2">
+                                    <input type="text" id="formatif1" class="input-field" placeholder="Formatif 1...">
+                                    <input type="text" id="formatif2" class="input-field" placeholder="Formatif 2...">
+                                </div>
+                                <div class="space-y-2">
+                                    <input type="text" id="sumatif1" class="input-field" placeholder="Sumatif 1...">
+                                    <input type="text" id="sumatif2" class="input-field" placeholder="Sumatif 2...">
+                                </div>
+                            </div>
+
+                            <div class="p-4 border border-yellow-500/30 rounded-lg bg-gray-800 shadow-[inset_0_0_10px_rgba(0,0,0,0.3)]">
+                                <h3 class="text-sm font-bold text-yellow-400 mb-3">Detail Rubrik</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                                    <div>
+                                       <label for="rubrikAspek" class="input-label">Aspek yang Dinilai</label>
+                                       <input type="text" id="rubrikAspek" class="input-field" placeholder="Cth: Kolaborasi, Hasil">
+                                   </div>
+                                    <div>
+                                       <label for="rubrikLevel" class="input-label">Level Ketercapaian</label>
+                                       <input type="text" id="rubrikLevel" class="input-field" placeholder="Cth: Baik, Cukup, Kurang">
+                                   </div>
+                                </div>
+                                <textarea id="rubrikDeskriptor" rows="2" class="input-field" placeholder="Deskriptor untuk rubrik..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BAGIAN 6: LKPD (Neon Orange) -->
+                    <div class="form-section neon-orange">
+                        <h2>Bagian 6: LKM</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="lkpdKelompok" class="input-label">LKM Kelompok</label>
+                                <textarea id="lkpdKelompok" rows="4" class="input-field" placeholder="Instruksi/Proyek/Diskusi..."></textarea>
+                            </div>
+                            <div>
+                                <label for="lkpdIndividu" class="input-label">LKM Individu</label>
+                                <textarea id="lkpdIndividu" rows="4" class="input-field" placeholder="Tugas/Soal Mandiri..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+           </div>
+
+           <!-- BAGIAN 4: PENGALAMAN BELAJAR (Neon Purple) -->
+           <div class="mt-8 w-full">
+                <div class="form-section neon-purple">
+                    <h2>Bagian 4: Pengalaman Belajar</h2>
+                    <p class="text-sm text-gray-400 mb-6">Kegiatan diatur horizontal ke samping (3 Kolom: Awal, Inti, Penutup) untuk menjaga kerapian alur.</p>
+                    <div id="pertemuan-container" class="space-y-6">
+                        <!-- Konten pertemuan dinamis (3 Kolom) akan dimuat di sini -->
+                    </div>
+                </div>
+           </div>
+
+           <!-- SUBMIT BUTTON -->
+           <div class="mt-10">
+                <button type="submit" class="w-full text-gray-900 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 hover:from-cyan-300 hover:to-purple-400 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-extrabold rounded-xl text-lg px-5 py-4 text-center transition-all shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] transform hover:-translate-y-1 uppercase tracking-widest">
+                    🖨️ Buat Pratinjau Dokumen RPM
+                </button>
+           </div>
+       </form>
+
+       <!-- HASIL GENERATE -->
+       <div id="output-wrapper" class="mt-16 hidden">
+            <div id="output-controls" class="mb-4 flex flex-wrap justify-end gap-3">
+                <button onclick="copyToClipboard()" class="bg-gray-800 hover:bg-cyan-900 border border-cyan-500 text-cyan-400 hover:text-cyan-200 font-bold py-2 px-5 rounded-lg transition-colors flex items-center gap-2 shadow-[0_0_10px_rgba(6,182,212,0.3)]">
+                    <span>📋</span> Salin Teks
+                </button>
+                <button onclick="downloadAsWord()" class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white font-bold py-2 px-5 rounded-lg transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                    <span>💾</span> Download (.doc)
+                </button>
+           </div>
+           
+           <div id="output-container" class="overflow-x-auto" contenteditable="true">
+               <!-- Hasil generate akan muncul di sini (dengan format A4 putih) -->
+           </div>
+            <div id="copy-feedback" class="text-center mt-4 text-cyan-400 font-bold hidden drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">✨ Teks berhasil disalin ke clipboard!</div>
+       </div>
+   </div>
+
+   <script>
+       // --- SISTEM PROTEKSI HAK CIPTA (LOCK CREDIT) ---
+       (function() {
+           // String "Created by : Dessy Sumarni, S.Pd.SD" di-enkripsi ke Base64 agar tidak mudah di-search/replace
+           const _0xauthor = atob('Q3JlYXRlZCBieSA6IERlc3N5IFN1bWFybmksIFMuUGQuU0Q=');
+           const _0xid = 'locked-author-credit';
+           
+           function _0xenforce() {
+                let el = document.getElementById(_0xid);
+                // Jika elemen dihapus secara paksa, blokir halaman dengan layar merah
+                if (!el) {
+                    document.body.innerHTML = '<div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#030712; color:#ef4444; font-family:sans-serif; text-align:center; padding:2rem;"><div style="border: 2px solid #ef4444; padding: 2rem; border-radius: 1rem; background: #111827;"><h1 style="font-size:2rem; margin-bottom:1rem; text-transform:uppercase;">⚠️ Pelanggaran Hak Cipta</h1><p style="color:#d1d5db; line-height: 1.5;">Credit pencipta asli telah dihapus atau dimodifikasi.<br>Aplikasi ini dikunci secara otomatis.<br><br>Harap hargai karya: <b style="color:#22d3ee;">Dessy Sumarni, S.Pd.SD</b></p></div></div>';
+                    return;
+                }
+                // Jika teks diubah secara diam-diam, kembalikan secara paksa ke teks asli
+                if (el.innerText !== _0xauthor) {
+                    el.innerText = _0xauthor;
+                }
+           }
+
+           // Injeksi Elemen saat halaman dimuat
+           document.addEventListener('DOMContentLoaded', () => {
+               const header = document.querySelector('header');
+               if(header) {
+                   const p = document.createElement('p');
+                   p.id = _0xid;
+                   p.className = 'text-gray-400 mt-3 font-medium tracking-widest text-sm text-shadow-[0_0_5px_rgba(156,163,175,0.3)] transition-all select-none';
+                   p.innerText = _0xauthor;
+                   // Mencegah klik kanan langsung pada nama
+                   p.addEventListener('contextmenu', e => e.preventDefault());
+                   header.appendChild(p);
+               }
+               
+               // Pengecekan berkelanjutan setiap 1.5 detik
+               setInterval(_0xenforce, 1500);
+
+               // MutationObserver untuk reaksi instan jika ada modifikasi DOM (lewat inspect element)
+               const observer = new MutationObserver((mutations) => {
+                   _0xenforce();
+               });
+               observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+           });
+       })();
+       // --- END PROTEKSI ---
+
+       const apiKey = ""; 
+
+       // Modal Functionality
+       function showMessage(msg) {
+           document.getElementById('modal-message').innerText = msg;
+           document.getElementById('custom-modal').classList.remove('hidden');
+       }
+
+       function closeModal() {
+           document.getElementById('custom-modal').classList.add('hidden');
+       }
+
+       document.addEventListener('DOMContentLoaded', () => {
+           updatePertemuanFields();
+       });
+
+       const form = document.getElementById('rpmForm');
+       const aiButton = document.getElementById('generate-ai-btn');
+
+       form.addEventListener('submit', function(event) {
+           event.preventDefault();
+           generateRPM(collectFormData());
+       });
+
+       aiButton.addEventListener('click', generateWithGemini);
+
+       // --- NEW: Handle CP Text File Upload ---
+       function handleCPFileUpload(event) {
+           const file = event.target.files[0];
+           if (!file) return;
+           
+           document.getElementById('cpFileName').innerText = "File: " + file.name;
+           
+           const reader = new FileReader();
+           reader.onload = function(e) {
+                const text = e.target.result;
+                const cpTextArea = document.getElementById('desainCapaianPembelajaran');
+                cpTextArea.value = text;
+                showMessage("File berhasil dibaca. Teks telah dimasukkan ke kolom Capaian Pembelajaran (CP) dan siap dianalisis oleh AI.");
+           };
+           reader.onerror = function() {
+                showMessage("Gagal membaca file. Pastikan Anda mengunggah file teks (.txt) yang valid.");
+           };
+           reader.readAsText(file);
+       }
+
+       function getDimensionData(id) {
+           const checkbox = document.getElementById(id);
+           const label = document.querySelector(`label[for="${id}"]`);
+           const description = label ? label.nextElementSibling.textContent : '';
+           return {
+               checked: checkbox.checked,
+               label: label ? label.textContent : '',
+               description: description || ''
+           };
+       }
+
+       function collectFormData() {
+           const totalJP = parseInt(document.getElementById('totalJP').value) || 0;
+           const pertemuanJPSelect = document.getElementById('pertemuanJP');
+           const pertemuanJPValue = parseInt(pertemuanJPSelect.value) || 1;
+           const pertemuanJPText = pertemuanJPSelect.selectedIndex > 0 ? pertemuanJPSelect.options[pertemuanJPSelect.selectedIndex].text : '';
+           const jumlahPertemuan = (pertemuanJPValue > 0) ? Math.ceil(totalJP / pertemuanJPValue) : 0;
+           const pertemuanData = [];
+           for (let i = 1; i <= jumlahPertemuan; i++) {
+                pertemuanData.push({
+                    awal: document.getElementById(`pertemuan-${i}-awal`)?.value || '',
+                    awalWaktu: document.getElementById(`pertemuan-${i}-awal-waktu`)?.value || '',
+                    inti: document.getElementById(`pertemuan-${i}-inti`)?.value || '',
+                    intiWaktu: document.getElementById(`pertemuan-${i}-inti-waktu`)?.value || '',
+                    penutup: document.getElementById(`pertemuan-${i}-penutup`)?.value || '',
+                    penutupWaktu: document.getElementById(`pertemuan-${i}-penutup-waktu`)?.value || '',
+                });
+           }
+
+           return {
+               namaSekolah: document.getElementById('namaSekolah').value,
+               mataPelajaran: document.getElementById('mataPelajaran').value,
+               materiPokok: document.getElementById('materiPokok').value,
+               tahunPelajaran: document.getElementById('tahunPelajaran').value,
+               kelasSemester: document.getElementById('kelasSemester').value,
+               fase: document.getElementById('fase').value,
+               totalJP: document.getElementById('totalJP').value,
+               pertemuanJP: pertemuanJPText,
+               penyusun: document.getElementById('penyusun').value,
+               namaGuru: document.getElementById('namaGuru').value,
+               nipGuru: document.getElementById('nipGuru').value,
+               namaKepsek: document.getElementById('namaKepsek').value,
+               nipKepsek: document.getElementById('nipKepsek').value,
+               kota: document.getElementById('kota').value,
+               tanggalPembuatan: document.getElementById('tanggalPembuatan').value,
+               dimensi: {
+                   imanTaqwa: getDimensionData('dimensiImanTaqwa'),
+                   kewargaan: getDimensionData('dimensiKewargaan'),
+                   penalaranKritis: getDimensionData('dimensiPenalaranKritis'),
+                   kreativitas: getDimensionData('dimensiKreativitas'),
+                   kolaborasi: getDimensionData('dimensiKolaborasi'),
+                   kemandirian: getDimensionData('dimensiKemandirian'),
+                   kesehatan: getDimensionData('dimensiKesehatan'),
+                   komunikasi: getDimensionData('dimensiKomunikasi'),
+               },
+               desainCapaianPembelajaran: document.getElementById('desainCapaianPembelajaran').value,
+               desainTujuanPembelajaran: document.getElementById('desainTujuanPembelajaran').value,
+               desainAlurTujuanPembelajaran: document.getElementById('desainAlurTujuanPembelajaran').value,
+               desainTopikPembelajaran: document.getElementById('desainTopikPembelajaran').value,
+               modelPembelajaran: document.getElementById('modelPembelajaran').value,
+               strategiPembelajaran: document.getElementById('strategiPembelajaran').value,
+               metodePembelajaran: document.getElementById('metodePembelajaran').value,
+               desainPraktikPedagogis: document.getElementById('desainPraktikPedagogis').value,
+               desainLingkungan: document.getElementById('desainLingkungan').value,
+               desainDigital: document.getElementById('desainDigital').value,
+               desainKemitraan: document.getElementById('desainKemitraan').value,
+               pertemuan: pertemuanData,
+               asesmenAwal: document.getElementById('asesmenAwal').value,
+               formatif: [document.getElementById('formatif1').value, document.getElementById('formatif2').value].filter(Boolean),
+               sumatif: [document.getElementById('sumatif1').value, document.getElementById('sumatif2').value].filter(Boolean),
+               rubrikAspek: document.getElementById('rubrikAspek').value,
+               rubrikLevel: document.getElementById('rubrikLevel').value,
+               rubrikDeskriptor: document.getElementById('rubrikDeskriptor').value,
+               lkpdKelompok: document.getElementById('lkpdKelompok').value,
+               lkpdIndividu: document.getElementById('lkpdIndividu').value,
+           };
+       }
+
+       function escapeHTML(str) {
+           if (!str) return '';
+           return str.replace(/[&<>"']/g, (match) => ({'&': '&amp;','<': '&lt;','>': '&gt;','"': '&quot;',"'": '&#39;'})[match]);
+       }
+       
+       function formatText(str) {
+           if (!str || str.trim() === '') return '<em>(Tidak diisi)</em>';
+           return escapeHTML(str).replace(/\n/g, '<br>');
+       }
+       
+       function formatToList(str, listType = 'ul') {
+           if (!str || str.trim() === '') return '<em>(Tidak diisi)</em>';
+           const items = str.split('\n').filter(line => line.trim() !== '' && line.trim() !== '-');
+           if (items.length === 0) return '<em>(Tidak diisi)</em>';
+           const listItems = items.map(item => `<li>${escapeHTML(item.replace(/^- /, ''))}</li>`).join('');
+           const listTag = listType === 'ol' ? 'ol' : 'ul';
+           const style = listType === 'ol' ? 'list-style-type: decimal;' : 'list-style-type: disc;';
+           return `<${listTag} style="${style} padding-left: 2em; margin: 0 0 10px 0; text-align: justify;">${listItems}</${listTag}>`;
+       }
+
+       function generateRPM(data) {
+           const outputWrapper = document.getElementById('output-wrapper');
+           const outputContainer = document.getElementById('output-container');
+           
+           function createSectionRow(title, content) {
+                // Menambahkan inline CSS agar saat di-export ke Word format rapi tidak hilang
+                return `<tr><td class="section-title" style="font-weight: bold; text-align: left; vertical-align: top; width: 25%; padding: 10px;">${title}</td><td style="padding: 10px; vertical-align: top;">${content}</td></tr>`;
+           }
+
+           const kesiapanMuridHTML = document.getElementById('kesiapan-murid').innerHTML.replace(/\[.*?\]<br>/, '');
+           const karakteristikMateriHTML = document.getElementById('karakteristik-materi').innerHTML.replace(/\[.*?\]<br>/, '');
+
+           const selectedDimensions = `<ol style="padding-left: 2em; margin: 0 0 10px 0; text-align: justify;">${Object.values(data.dimensi)
+               .filter(d => d.checked)
+               .map(d => `<li><strong>${escapeHTML(d.label)}:</strong> ${escapeHTML(d.description)}</li>`)
+               .join('')}</ol>`;
+
+           // REVISI LAYOUT: Memisahkan Judul Rata Kiri & Isi Justify untuk menghindari spasi melar di MS Word
+           const identifikasiContent = `
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Kesiapan Murid:</div>
+               <div style="text-align: justify; margin-bottom: 12px;">${kesiapanMuridHTML}</div>
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Karakteristik Materi Pelajaran:</div>
+               <div style="text-align: justify; margin-bottom: 12px;">${karakteristikMateriHTML}</div>
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Dimensi Profil Lulusan yang Dituju:</div>
+               ${selectedDimensions}
+           `;
+
+           // REVISI LAYOUT DESAIN
+           const desainContent = `
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Capaian Pembelajaran:</div>
+               <div style="text-align: justify; margin-bottom: 12px;">${formatText(data.desainCapaianPembelajaran)}</div>
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Tujuan Pembelajaran:</div>
+               ${formatToList(data.desainTujuanPembelajaran, 'ol')}
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Alur Tujuan Pembelajaran:</div>
+               ${formatToList(data.desainAlurTujuanPembelajaran, 'ol')}
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Topik Pembelajaran:</div>
+               ${formatToList(data.desainTopikPembelajaran, 'ul')}
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Praktik Pedagogis:</div>
+               <ul style="padding-left: 2em; margin: 0 0 10px 0; text-align: justify;">
+                   <li><strong>Model:</strong> ${data.modelPembelajaran ? escapeHTML(data.modelPembelajaran) : '<em>(Belum dipilih)</em>'}</li>
+                   <li><strong>Strategi:</strong> ${data.strategiPembelajaran ? escapeHTML(data.strategiPembelajaran) : '<em>(Belum dipilih)</em>'}</li>
+                   <li><strong>Metode:</strong> ${data.metodePembelajaran ? escapeHTML(data.metodePembelajaran) : '<em>(Belum dipilih)</em>'}</li>
+               </ul>
+               <div style="text-align: justify; margin-bottom: 12px; margin-top: 5px;">${formatText(data.desainPraktikPedagogis)}</div>
+               <div style="text-align: left; font-weight: bold; margin-top: 10px; margin-bottom: 4px;">Lingkungan Pembelajaran:</div>
+               <div style="text-align: justify; margin-bottom: 12px;">${formatText(data.desainLingkungan)}</div>
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Pemanfaatan Digital:</div>
+               <div style="text-align: justify; margin-bottom: 12px;">${formatText(data.desainDigital)}</div>
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Kemitraan Pembelajaran:</div>
+               <div style="text-align: justify; margin-bottom: 12px;">${formatText(data.desainKemitraan)}</div>
+           `;
+
+           // REVISI TABEL PENGALAMAN: Menambahkan properti inline CSS eksplisit untuk kolom agar stabil di Word
+           const pengalamanBelajarHTML = data.pertemuan.map((p, index) => `
+               <div style="font-weight: bold; margin-top: 10px; margin-bottom: 5px; text-align: left;">Pertemuan ${index + 1}</div>
+               <table class="nested-table" style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 15px;">
+                   <thead>
+                       <tr>
+                           <th style="width: 15%; border: 1px solid black; padding: 6px; background-color: #f2f2f2; text-align: center;">Kegiatan</th>
+                           <th style="border: 1px solid black; padding: 6px; background-color: #f2f2f2; text-align: center;">Deskripsi Kegiatan</th>
+                           <th style="width: 15%; text-align: center; border: 1px solid black; padding: 6px; background-color: #f2f2f2;">Alokasi Waktu</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <tr><td style="font-weight: bold; border: 1px solid black; padding: 6px; vertical-align: top;">Awal</td><td style="text-align: justify; border: 1px solid black; padding: 6px; vertical-align: top;">${formatText(p.awal)}</td><td style="text-align: center; border: 1px solid black; padding: 6px; vertical-align: top;">${escapeHTML(p.awalWaktu)} menit</td></tr>
+                       <tr><td style="font-weight: bold; border: 1px solid black; padding: 6px; vertical-align: top;">Inti</td><td style="text-align: justify; border: 1px solid black; padding: 6px; vertical-align: top;">${formatText(p.inti)}</td><td style="text-align: center; border: 1px solid black; padding: 6px; vertical-align: top;">${escapeHTML(p.intiWaktu)} menit</td></tr>
+                       <tr><td style="font-weight: bold; border: 1px solid black; padding: 6px; vertical-align: top;">Penutup</td><td style="text-align: justify; border: 1px solid black; padding: 6px; vertical-align: top;">${formatText(p.penutup)}</td><td style="text-align: center; border: 1px solid black; padding: 6px; vertical-align: top;">${escapeHTML(p.penutupWaktu)} menit</td></tr>
+                   </tbody>
+               </table>
+           `).join('');
+           
+           const rubrikAspekArr = data.rubrikAspek.split(',').map(s => s.trim());
+           const rubrikLevelArr = data.rubrikLevel.split(',').map(s => s.trim());
+
+           const rubrikTable = (rubrikAspekArr.length > 0 && rubrikAspekArr[0] !== '') ? `
+               <div style="font-weight: bold; margin-top: 15px; margin-bottom: 5px; text-align: left;">Rubrik Penilaian:</div>
+               <table class="nested-table" style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 10px;">
+                   <thead style="background-color: #f2f2f2;">
+                       <tr><th style="border: 1px solid black; padding: 6px; text-align: center;">Aspek yang Dinilai</th>${rubrikLevelArr.map(level => `<th style="border: 1px solid black; padding: 6px; text-align: center;">${escapeHTML(level)}</th>`).join('')}</tr>
+                   </thead>
+                   <tbody>
+                       ${rubrikAspekArr.map(aspek => `
+                           <tr><td style="font-weight: bold; border: 1px solid black; padding: 6px;">${escapeHTML(aspek)}</td>${rubrikLevelArr.map(() => `<td style="border: 1px solid black; padding: 6px;"></td>`).join('')}</tr>
+                        `).join('')}
+                   </tbody>
+               </table>
+               <div style="margin-top: 10px; margin-bottom: 4px; text-align: left;"><strong>Deskriptor:</strong></div>
+               <div style="text-align: justify; margin-bottom: 10px;">${formatText(data.rubrikDeskriptor)}</div>
+           ` : '';
+
+           const formatifItems = data.formatif.map(item => `<li>${escapeHTML(item)}</li>`).join('');
+           const sumatifItems = data.sumatif.map(item => `<li>${escapeHTML(item)}</li>`).join('');
+
+           // REVISI LAYOUT ASESMEN
+           const asesmenContent = `
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Asesmen Awal:</div>
+               <div style="text-align: justify; margin-bottom: 12px;">${formatText(data.asesmenAwal)}</div>
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Asesmen Proses (Formatif):</div>
+               <ul style="padding-left: 2em; margin: 0 0 12px 0; text-align: justify;">${formatifItems || '<li><em>(Tidak diisi)</em></li>'}</ul>
+               <div style="text-align: left; font-weight: bold; margin-bottom: 4px;">Asesmen Akhir (Sumatif):</div>
+               <ul style="padding-left: 2em; margin: 0 0 12px 0; text-align: justify;">${sumatifItems || '<li><em>(Tidak diisi)</em></li>'}</ul>
+               ${rubrikTable}
+           `;
+           
+           const lkpdContent = `
+               <div style="margin-bottom: 25px;">
+                   <div style="font-weight: bold; text-align: center; margin-bottom: 15px; font-size: 13pt;">LEMBAR KERJA MURID (LKM) KELOMPOK</div>
+                   <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 15px; line-height: 1.6; border: none; text-align: left;">
+                       <tr><td style="width: 130px; border: none; padding: 2px 0;">Nama Kelompok</td><td style="border: none; padding: 2px 0;">: ........................................................................</td></tr>
+                       <tr><td style="border: none; padding: 2px 0;">Kelas</td><td style="border: none; padding: 2px 0;">: ........................................................................</td></tr>
+                       <tr><td style="vertical-align: top; border: none; padding: 2px 0;">Anggota</td><td style="border: none; padding: 2px 0;">: 1. ....................................................................<br>&nbsp;&nbsp;2. ....................................................................<br>&nbsp;&nbsp;3. ....................................................................<br>&nbsp;&nbsp;4. ....................................................................</td></tr>
+                   </table>
+                   <div style="font-weight: bold; margin-bottom: 5px; text-align: left;">Instruksi/Langkah Kerja:</div>
+                   <div style="padding: 10px; border: 1px solid #ccc; background-color: #fcfcfc; min-height: 100px; text-align: justify;">${formatText(data.lkpdKelompok)}</div>
+               </div>
+               <div style="margin-top: 30px;">
+                   <div style="font-weight: bold; text-align: center; margin-bottom: 15px; font-size: 13pt;">LEMBAR KERJA MURID (LKM) INDIVIDU</div>
+                   <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 15px; line-height: 1.6; border: none; text-align: left;">
+                       <tr><td style="width: 130px; border: none; padding: 2px 0;">Nama Lengkap</td><td style="border: none; padding: 2px 0;">: ........................................................................</td></tr>
+                       <tr><td style="border: none; padding: 2px 0;">Kelas</td><td style="border: none; padding: 2px 0;">: ........................................................................</td></tr>
+                       <tr><td style="border: none; padding: 2px 0;">No. Absen</td><td style="border: none; padding: 2px 0;">: ........................................................................</td></tr>
+                   </table>
+                   <div style="font-weight: bold; margin-bottom: 5px; text-align: left;">Tugas/Soal Mandiri:</div>
+                   <div style="padding: 10px; border: 1px solid #ccc; background-color: #fcfcfc; min-height: 100px; text-align: justify;">${formatText(data.lkpdIndividu)}</div>
+               </div>
+           `;
+               
+           let rawHTML = `
+               <div class="rpp-document">
+                   <div style="text-align: center; margin-bottom: 30px;">
+                       <h3 style="font-weight: bold; font-size: 14pt; margin-bottom: 2px; text-transform: uppercase;">RENCANA PEMBELAJARAN MENDALAM (RPM)</h3>
+                       <h4 style="font-weight: bold; font-size: 12pt; margin-bottom: 0; text-transform: uppercase;">MATA PELAJARAN: ${escapeHTML(data.mataPelajaran)}</h4>
+                   </div>
+
+                   <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 25px; line-height: 1.5; font-family: 'Times New Roman', Times, serif; border: none; text-align: left;">
+                       <tr><td style="width: 180px; border: none; padding: 2px 0;">Nama Sekolah</td><td style="border: none; padding: 2px 0;">: ${escapeHTML(data.namaSekolah)}</td></tr>
+                       <tr><td style="border: none; padding: 2px 0;">Penyusun</td><td style="border: none; padding: 2px 0;">: ${escapeHTML(data.penyusun)}</td></tr>
+                       <tr><td style="border: none; padding: 2px 0;">Materi Pokok</td><td style="border: none; padding: 2px 0;">: ${escapeHTML(data.materiPokok)}</td></tr>
+                       <tr><td style="border: none; padding: 2px 0;">Kelas/Semester</td><td style="border: none; padding: 2px 0;">: ${escapeHTML(data.kelasSemester)}</td></tr>
+                       <tr><td style="border: none; padding: 2px 0;">Fase</td><td style="border: none; padding: 2px 0;">: ${escapeHTML(data.fase)}</td></tr>
+                       <tr><td style="border: none; padding: 2px 0;">Alokasi Waktu</td><td style="border: none; padding: 2px 0;">: ${escapeHTML(data.totalJP)} JP (${escapeHTML(data.pertemuanJP)})</td></tr>
+                   </table>
+
+                   <table class="main-table" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+                       <tbody>
+                           ${createSectionRow("A. IDENTIFIKASI", identifikasiContent)}
+                           ${createSectionRow("B. DESAIN PEMBELAJARAN", desainContent)}
+                           ${createSectionRow("C. PENGALAMAN BELAJAR", pengalamanBelajarHTML)}
+                           ${createSectionRow("D. RANCANGAN ASESMEN", asesmenContent)}
+                           ${createSectionRow("E. LAMPIRAN", lkpdContent)}
+                       </tbody>
+                   </table>
+
+                   <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 50px; border: none;">
+                       <tr>
+                           <td style="width: 50%; text-align: center; vertical-align: top; border: none;">
+                               Mengetahui,<br>Kepala Sekolah<br><br><br><br>
+                               <span style="text-decoration: underline; font-weight: bold;">${escapeHTML(data.namaKepsek)}</span><br>
+                               <span>NIP. ${escapeHTML(data.nipKepsek) !== '-' ? escapeHTML(data.nipKepsek) : ''}</span>
+                           </td>
+                           <td style="width: 50%; text-align: center; vertical-align: top; border: none;">
+                               ${escapeHTML(data.kota)}, ${escapeHTML(data.tanggalPembuatan)}<br>Guru Mata Pelajaran<br><br><br><br>
+                               <span style="text-decoration: underline; font-weight: bold;">${escapeHTML(data.namaGuru)}</span><br>
+                               <span>NIP. ${escapeHTML(data.nipGuru) !== '-' ? escapeHTML(data.nipGuru) : ''}</span>
+                           </td>
+                       </tr>
+                   </table>
+               </div>`;
+           
+           // Filter global untuk mengubah kata terkait peserta didik menjadi murid
+           rawHTML = rawHTML.replace(/peserta\s+didik/gi, match => {
+               if (match === 'PESERTA DIDIK') return 'MURID';
+               if (match === 'Peserta Didik') return 'Murid';
+               return 'murid';
+           }).replace(/\bsiswa\b/gi, match => {
+               if (match === 'SISWA') return 'MURID';
+               if (match === 'Siswa') return 'Murid';
+               return 'murid';
+           });
+
+           outputContainer.innerHTML = rawHTML;
+           
+           outputWrapper.classList.remove('hidden');
+           outputWrapper.scrollIntoView({ behavior: 'smooth' });
+       }
+
+       const totalJPInput = document.getElementById('totalJP');
+       const pertemuanJPInput = document.getElementById('pertemuanJP');
+       
+       function updatePertemuanFields() {
+           const totalJP = parseInt(totalJPInput.value) || 0;
+           const pertemuanJPValue = parseInt(pertemuanJPInput.value) || 1; 
+           if (pertemuanJPValue <= 0) return;
+
+           const jumlahPertemuan = Math.ceil(totalJP / pertemuanJPValue);
+           const container = document.getElementById('pertemuan-container');
+           
+           container.innerHTML = ''; 
+           for (let i = 1; i <= jumlahPertemuan; i++) {
+               // Tema Gelap untuk Kotak Pertemuan Internal
+               container.innerHTML += `
+               <div class="p-6 border border-purple-500/40 rounded-xl bg-gray-900 shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                   <h3 class="text-xl font-bold mb-4 text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.8)]">Pertemuan ${i}</h3>
+                   
+                   <div class="mb-5 p-4 bg-gray-800 rounded-lg text-gray-300 text-xs flex flex-col md:flex-row gap-4 border border-gray-700 shadow-inner">
+                       <div class="flex-1"><strong class="text-purple-400 block mb-1">Memahami:</strong><p class="leading-relaxed">Fasilitasi murid mengonstruksi pengetahuan esensial/aplikatif.</p></div>
+                       <div class="hidden md:block w-px bg-gray-700"></div>
+                       <div class="flex-1"><strong class="text-purple-400 block mb-1">Mengaplikasi:</strong><p class="leading-relaxed">Kondisikan penerapan pemahaman dalam konteks nyata.</p></div>
+                       <div class="hidden md:block w-px bg-gray-700"></div>
+                       <div class="flex-1"><strong class="text-purple-400 block mb-1">Merefleksi:</strong><p class="leading-relaxed">Evaluasi & maknai hasil belajar serta kelola belajar mandiri.</p></div>
+                   </div>
+
+                   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 focus-within:border-purple-400 focus-within:shadow-[0_0_10px_rgba(192,132,252,0.3)] transition-all">
+                           <div class="flex justify-between items-center mb-3">
+                               <label for="pertemuan-${i}-awal" class="block text-sm font-bold text-gray-200">Kegiatan Awal</label>
+                               <div class="flex items-center gap-1">
+                                   <input type="number" id="pertemuan-${i}-awal-waktu" class="input-field !p-1 !text-center !w-14 bg-gray-900 !border-gray-600" placeholder="Min"><span class="text-xs text-gray-400">mnt</span>
+                               </div>
+                           </div>
+                           <textarea id="pertemuan-${i}-awal" rows="5" class="input-field !bg-gray-900 !border-gray-600" placeholder="Saran Kegiatan Awal..."></textarea>
+                       </div>
+                       
+                       <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 focus-within:border-purple-400 focus-within:shadow-[0_0_10px_rgba(192,132,252,0.3)] transition-all">
+                           <div class="flex justify-between items-center mb-3">
+                               <label for="pertemuan-${i}-inti" class="block text-sm font-bold text-gray-200">Kegiatan Inti</label>
+                               <div class="flex items-center gap-1">
+                                   <input type="number" id="pertemuan-${i}-inti-waktu" class="input-field !p-1 !text-center !w-14 bg-gray-900 !border-gray-600" placeholder="Min"><span class="text-xs text-gray-400">mnt</span>
+                               </div>
+                           </div>
+                           <textarea id="pertemuan-${i}-inti" rows="5" class="input-field !bg-gray-900 !border-gray-600" placeholder="Gabungkan fase Memahami/ Mengaplikasi/ Merefleksi..."></textarea>
+                       </div>
+
+                       <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 focus-within:border-purple-400 focus-within:shadow-[0_0_10px_rgba(192,132,252,0.3)] transition-all">
+                           <div class="flex justify-between items-center mb-3">
+                               <label for="pertemuan-${i}-penutup" class="block text-sm font-bold text-gray-200">Kegiatan Penutup</label>
+                               <div class="flex items-center gap-1">
+                                   <input type="number" id="pertemuan-${i}-penutup-waktu" class="input-field !p-1 !text-center !w-14 bg-gray-900 !border-gray-600" placeholder="Min"><span class="text-xs text-gray-400">mnt</span>
+                               </div>
+                           </div>
+                           <textarea id="pertemuan-${i}-penutup" rows="5" class="input-field !bg-gray-900 !border-gray-600" placeholder="Saran Kegiatan Penutup..."></textarea>
+                       </div>
+                   </div>
+               </div>`;
+           }
+           autofillWaktuPertemuan(); 
+       }
+       
+       function autofillWaktuPertemuan() {
+           const pertemuanJPValue = parseInt(pertemuanJPInput.value) || 0;
+           if (pertemuanJPValue === 0) return;
+           const totalMenit = pertemuanJPValue * 45;
+           let waktuAwal, waktuInti, waktuPenutup;
+
+           switch (pertemuanJPValue) {
+               case 2: waktuAwal = 15; waktuPenutup = 15; break;
+               case 4: waktuAwal = 20; waktuPenutup = 20; break;
+               case 5: waktuAwal = 25; waktuPenutup = 25; break;
+               case 3: default: waktuAwal = 15; waktuPenutup = 15; break;
+           }
+           waktuInti = totalMenit - waktuAwal - waktuPenutup;
+
+           const jumlahPertemuan = Math.ceil((parseInt(totalJPInput.value) || 0) / pertemuanJPValue);
+           for (let i = 1; i <= jumlahPertemuan; i++) {
+               const awalWaktuEl = document.getElementById(`pertemuan-${i}-awal-waktu`);
+               const intiWaktuEl = document.getElementById(`pertemuan-${i}-inti-waktu`);
+               const penutupWaktuEl = document.getElementById(`pertemuan-${i}-penutup-waktu`);
+               if(awalWaktuEl) awalWaktuEl.value = waktuAwal;
+               if(intiWaktuEl) intiWaktuEl.value = waktuInti;
+               if(penutupWaktuEl) penutupWaktuEl.value = waktuPenutup;
+           }
+       }
+       
+       async function generateWithGemini() {
+           const aiBtnText = document.getElementById('ai-btn-text');
+           const aiSpinner = document.getElementById('ai-spinner');
+
+           aiBtnText.textContent = 'Menghasilkan...';
+           aiSpinner.classList.remove('hidden');
+           aiButton.disabled = true;
+
+           const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+           
+           const pertemuanJPValue = parseInt(document.getElementById('pertemuanJP').value) || 1;
+           const totalMenit = pertemuanJPValue * 45;
+
+           const mataPelajaran = document.getElementById('mataPelajaran').value;
+           const materiPokok = document.getElementById('materiPokok').value;
+           const fase = document.getElementById('fase').value;
+           const kelas = document.getElementById('kelasSemester').value;
+           const jumlahPertemuan = Math.ceil((parseInt(totalJPInput.value) || 0) / pertemuanJPValue);
+
+           const selectedModel = document.getElementById('modelPembelajaran').value;
+           const selectedStrategi = document.getElementById('strategiPembelajaran').value;
+           const selectedMetode = document.getElementById('metodePembelajaran').value;
+           
+           // Mengambil input dari Capaian Pembelajaran untuk dianalisa
+           const capaianPembelajaran = document.getElementById('desainCapaianPembelajaran').value;
+
+           // Updated System Prompt integrated with the 4 Deep Learning Modules
+           const systemPrompt = `Anda adalah Asisten Ahli Perancangan Kurikulum 'Pembelajaran Mendalam' (Deep Learning) di Indonesia. Tugas Anda menghasilkan ide Rencana Pembelajaran Mendalam (RPM) berlandaskan 4 Komponen Utama:
+1. Identifikasi: Pemetaan kesiapan belajar, karakteristik murid (latar belakang, minat, gaya belajar), karakteristik materi (kompleksitas, konsep kunci), dan lingkungan belajar.
+2. Desain Pembelajaran: Perumusan tujuan terukur, materi esensial, praktik pedagogis yang relevan, kemitraan (orang tua/masyarakat), lingkungan inklusif, dan pemanfaatan digital.
+3. Pengalaman Belajar: Menggunakan siklus 3 tahap (Memahami, Mengaplikasi, Merefleksi) yang dijiwai 3 prinsip: Berkesadaran (Mindful Learning), Bermakna (Meaningful Learning), dan Menggembirakan (Joyful Learning).
+4. Asesmen: Meliputi Asesmen Awal (diagnostik), Formatif (proses & umpan balik positif/konstruktif), dan Sumatif (akhir) dengan instrumen dan rubrik yang objektif dan transparan.
+SELALU gunakan kata 'murid', JANGAN PERNAH gunakan istilah 'peserta didik' atau 'siswa'.
+ATURAN MUTLAK: Respons Anda WAJIB berupa JSON murni yang valid secara ketat (RFC 8259). Pastikan semua string di-escape dengan benar.`;
+           
+           // Updated User Query with precise instructions and CP constraint
+           const userQuery = `
+           Berdasarkan informasi berikut:
+           - Mata Pelajaran: ${mataPelajaran}
+           - Materi Pokok: ${materiPokok}
+           - Fase: ${fase}
+           - Kelas: ${kelas}
+           - Jumlah Pertemuan: ${jumlahPertemuan}
+           - Total waktu per pertemuan: ${totalMenit} menit
+           ${selectedModel ? `- Model Pembelajaran: ${selectedModel}` : ''}
+           ${selectedStrategi ? `- Strategi Pembelajaran: ${selectedStrategi}` : ''}
+           ${selectedMetode ? `- Metode Pembelajaran: ${selectedMetode}` : ''}
+           ${capaianPembelajaran ? `- Capaian Pembelajaran (Acuan Utama): ${capaianPembelajaran}` : ''}
+
+           Buatkan draf lengkap untuk Rencana Pembelajaran Mendalam (RPM).
+           Terapkan Instruksi Pembelajaran Ini secara spesifik berlandaskan pedoman:
+           - "identifikasi.kesiapanMurid": Buat narasi pemetaan kesiapan belajar awal, pengalaman, dan potensi/minat murid terkait materi ini.
+           - "identifikasi.karakteristikMateri": Analisis tingkat kompleksitas dan konsep-konsep kunci dari materi pokok ini.
+           - "desainPembelajaran.tp": Tuliskan 3-4 Tujuan Pembelajaran yang jelas, terukur, bermakna dan WAJIB diturunkan dari Capaian Pembelajaran (CP) acuan di atas.
+           - "desainPembelajaran.atp": Tuliskan Alur Tujuan Pembelajaran (ATP) yang logis, sistematis, dan bermuara pada CP.
+           - "desainPembelajaran.topik": Rincikan materi esensial menjadi 3-5 sub-topik.
+           - "desainPembelajaran.pedagogis": Berikan rasionalisasi pemilihan model/metode/strategi pedagogis berdasarkan karakteristik murid dan materi.
+           - "desainPembelajaran.lingkungan": Saran penataan lingkungan belajar yang aman, nyaman, inklusif, dan suportif.
+           - "desainPembelajaran.digital": 4-5 opsi integrasi alat/aplikasi digital pendukung yang modern dan fleksibel.
+           - "desainPembelajaran.kemitraan": 1-2 ide kemitraan kolaboratif dengan orang tua, masyarakat, atau komunitas terkait materi.
+           - "pengalamanBelajar": Buat aktivitas untuk ${jumlahPertemuan} pertemuan (Awal, Inti, Penutup). Integrasikan secara nyata siklus 'Memahami', 'Mengaplikasi' (konteks nyata/proyek), dan 'Merefleksi' (jujur & konstruktif). Pastikan prinsip Mindful, Meaningful, dan Joyful Learning tercermin jelas dalam langkah kegiatan.
+           - "asesmen.awal": Saran asesmen awal/diagnostik sebelum memulai pembelajaran (mengetahui profil/kebutuhan awal).
+           - "asesmen.formatif": Saran asesmen proses (formatif) untuk memantau pemahaman disertai saran cara guru memberi umpan balik (feedback) spesifik/konstruktif.
+           - "asesmen.sumatif": Saran instrumen asesmen akhir (sumatif) untuk mengevaluasi kompetensi utuh.
+           - "asesmen.rubrik": Buat rubrik penilaian (aspek, level, deskriptor) yang transparan sebagai kriteria ketercapaian.
+           - "lkpd": Tugas/proyek kelompok (mendorong kolaborasi) dan tugas individu (mendorong kemandirian) yang bermakna.
+           `;
+           
+           const payload = {
+               contents: [{ parts: [{ text: userQuery }] }],
+               systemInstruction: { parts: [{ text: systemPrompt }] },
+               generationConfig: {
+                   responseMimeType: "application/json",
+                   responseSchema: {
+                       type: "OBJECT",
+                       properties: {
+                           identifikasi: { type: "OBJECT", properties: { kesiapanMurid: { type: "STRING" }, karakteristikMateri: { type: "STRING" } } },
+                           desainPembelajaran: {
+                               type: "OBJECT",
+                               properties: {
+                                   tp: { type: "STRING" }, atp: { type: "STRING" }, topik: { type: "STRING" }, model: { type: "STRING" },
+                                   strategi: { type: "STRING" }, metode: { type: "STRING" }, pedagogis: { type: "STRING" },
+                                   lingkungan: { type: "STRING" }, digital: { type: "STRING" }, kemitraan: { type: "STRING" }
+                               }
+                           },
+                           pengalamanBelajar: {
+                               type: "ARRAY",
+                               items: {
+                                   type: "OBJECT",
+                                   properties: {
+                                       pertemuan: { type: "NUMBER" }, awal: { type: "STRING" }, awalWaktu: { type: "STRING" },
+                                       inti: { type: "STRING" }, intiWaktu: { type: "STRING" }, penutup: { type: "STRING" }, penutupWaktu: { type: "STRING" }
+                                   }
+                               }
+                           },
+                           asesmen: {
+                               type: "OBJECT",
+                               properties: {
+                                   awal: { type: "STRING" }, formatif: { type: "ARRAY", items: { type: "STRING" } }, sumatif: { type: "ARRAY", items: { type: "STRING" } },
+                                   rubrik: { type: "OBJECT", properties: { aspek: { type: "STRING" }, level: { type: "STRING" }, deskriptor: { type: "STRING" } } }
+                               }
+                           },
+                           lkpd: { type: "OBJECT", properties: { kelompok: { type: "STRING" }, individu: { type: "STRING" } } }
+                       }
+                   }
+               }
+           };
+
+           let retries = 5; let delay = 1000; let result = null; let success = false;
+
+           while (retries > 0 && !success) {
+               try {
+                   const response = await fetch(apiUrl, { 
+                       method: 'POST', 
+                       headers: { 'Content-Type': 'application/json' }, 
+                       body: JSON.stringify(payload) 
+                   });
+                   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                   result = await response.json(); 
+                   success = true;
+               } catch (error) {
+                   retries--;
+                   if (retries === 0) {
+                       showMessage("Gagal menghasilkan ide dari AI. Pastikan API Key valid atau coba lagi nanti.");
+                       aiBtnText.textContent = '✨ Hasilkan Ide dengan AI'; 
+                       aiSpinner.classList.add('hidden'); 
+                       aiButton.disabled = false;
+                       return;
+                   }
+                   await new Promise(r => setTimeout(r, delay)); 
+                   delay *= 2;
+               }
+           }
+
+           try {
+               if (result && result.candidates && result.candidates.length > 0) {
+                   let cleanedJsonText = result.candidates[0].content.parts[0].text;
+                   const firstBrace = cleanedJsonText.indexOf('{');
+                   const lastBrace = cleanedJsonText.lastIndexOf('}');
+                   if (firstBrace !== -1 && lastBrace !== -1) cleanedJsonText = cleanedJsonText.substring(firstBrace, lastBrace + 1);
+                   populateFormWithAI(JSON.parse(cleanedJsonText));
+               }
+           } catch (parseError) {
+               showMessage("Gagal memproses respons dari AI. Silakan coba hasilkan lagi.");
+           } finally {
+               aiBtnText.textContent = '✨ Hasilkan Ide dengan AI'; 
+               aiSpinner.classList.add('hidden'); 
+               aiButton.disabled = false;
+           }
+       }
+       
+       function populateFormWithAI(data) {
+           const { identifikasi, desainPembelajaran, pengalamanBelajar, asesmen, lkpd } = data;
+           
+           if (identifikasi) {
+               document.getElementById('kesiapan-murid').innerHTML = `[Dihasilkan oleh AI]<br>${identifikasi.kesiapanMurid || ''}`;
+               document.getElementById('karakteristik-materi').innerHTML = `[Dihasilkan oleh AI]<br>${identifikasi.karakteristikMateri || ''}`;
+           }
+
+           if (desainPembelajaran) {
+               if (desainPembelajaran.tp) document.getElementById('desainTujuanPembelajaran').value = desainPembelajaran.tp;
+               if (desainPembelajaran.atp) document.getElementById('desainAlurTujuanPembelajaran').value = desainPembelajaran.atp;
+               if (desainPembelajaran.topik) document.getElementById('desainTopikPembelajaran').value = desainPembelajaran.topik;
+               
+               ['modelPembelajaran', 'strategiPembelajaran', 'metodePembelajaran'].forEach(id => {
+                   const select = document.getElementById(id);
+                   const aiVal = desainPembelajaran[id.replace('Pembelajaran', '')];
+                   if (aiVal) Array.from(select.options).forEach(opt => { if(opt.value.toLowerCase() === aiVal.toLowerCase()) select.value = opt.value; });
+               });
+
+               document.getElementById('desainPraktikPedagogis').value = desainPembelajaran.pedagogis || '';
+               document.getElementById('desainLingkungan').value = desainPembelajaran.lingkungan || '';
+               document.getElementById('desainDigital').value = desainPembelajaran.digital || '';
+               document.getElementById('desainKemitraan').value = desainPembelajaran.kemitraan || '';
+           }
+
+           if (pengalamanBelajar && Array.isArray(pengalamanBelajar)) {
+               pengalamanBelajar.forEach((pertemuan, index) => {
+                   const i = index + 1;
+                   ['awal', 'awalWaktu', 'inti', 'intiWaktu', 'penutup', 'penutupWaktu'].forEach(field => {
+                       const el = document.getElementById(`pertemuan-${i}-${field}`);
+                       if (el) el.value = pertemuan[field] || '';
+                   });
+               });
+           }
+
+           if (asesmen) {
+               document.getElementById('asesmenAwal').value = asesmen.awal || '';
+               if(asesmen.formatif && asesmen.formatif.length > 0) { document.getElementById('formatif1').value = asesmen.formatif[0] || ''; document.getElementById('formatif2').value = asesmen.formatif[1] || ''; }
+               if(asesmen.sumatif && asesmen.sumatif.length > 0) { document.getElementById('sumatif1').value = asesmen.sumatif[0] || ''; document.getElementById('sumatif2').value = asesmen.sumatif[1] || ''; }
+               if(asesmen.rubrik) {
+                   document.getElementById('rubrikAspek').value = asesmen.rubrik.aspek || '';
+                   document.getElementById('rubrikLevel').value = asesmen.rubrik.level || '';
+                   document.getElementById('rubrikDeskriptor').value = asesmen.rubrik.deskriptor || '';
+               }
+           }
+
+           if (lkpd) {
+               if (document.getElementById('lkpdKelompok')) document.getElementById('lkpdKelompok').value = lkpd.kelompok || '';
+               if (document.getElementById('lkpdIndividu')) document.getElementById('lkpdIndividu').value = lkpd.individu || '';
+           }
+       }
+
+       totalJPInput.addEventListener('input', updatePertemuanFields);
+       pertemuanJPInput.addEventListener('change', updatePertemuanFields);
+
+       function copyToClipboard() {
+           const outputContainer = document.getElementById('output-container');
+           const range = document.createRange();
+           range.selectNode(outputContainer);
+           window.getSelection().removeAllRanges();
+           window.getSelection().addRange(range);
+
+           try {
+               if (document.execCommand('copy')) {
+                   const feedback = document.getElementById('copy-feedback');
+                   feedback.classList.remove('hidden');
+                   setTimeout(() => feedback.classList.add('hidden'), 2500);
+               } else showMessage('Gagal menyalin. Silakan coba blok dan salin secara manual.');
+           } catch (err) {
+               showMessage('Fitur salin otomatis diblokir oleh peramban Anda.');
+           }
+           window.getSelection().removeAllRanges();
+       }
+
+       function downloadAsWord() {
+           const outputContainer = document.getElementById('output-container');
+           if (!outputContainer || !outputContainer.innerHTML.trim()) {
+               showMessage("Tidak ada konten untuk diunduh. Buat pratinjau terlebih dahulu."); return;
+           }
+
+           // Updated styling added inside the Word Export Header for alignment
+           const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML to Word Document</title><style>body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; text-align: justify; } p { margin-top: 0; margin-bottom: 10px; text-align: justify; line-height: 1.5; } .main-table, .nested-table { border-collapse: collapse; width: 100%; text-align: left; } .main-table td, .nested-table td, .nested-table th { border: 1px solid black; padding: 8px; vertical-align: top; text-align: justify; line-height: 1.5; } .section-title { font-weight: bold; text-align: left !important; } .nested-table { margin-top: 10px; } .nested-table th { background-color: #f2f2f2; text-align: center; } ul, ol { padding-left: 2.2em; margin: 0 0 10px 0; text-align: justify; } li { margin-bottom: 4px; text-align: justify; line-height: 1.5; }</style></head><body>";
+           const sourceHTML = header + outputContainer.innerHTML + "</body></html>";
+           
+           const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+           const fileLink = document.createElement("a");
+           fileLink.href = source;
+           fileLink.download = 'RPM_Dokumen.doc';
+           fileLink.click();
+       }
+   </script>
+</body>
+</html>
